@@ -1,3 +1,28 @@
+Notes:
+
+reproduce complexity:
+
+
+
+
+aws arm64 machine prep server and send to dockerhub:
+
+sudo docker build -t btardio/ecea5307btardio:latest . && sudo docker push btardio/ecea5307btardio:latest
+
+
+rpi5 machine start server:
+
+docker container stop server || true && docker system prune -a -f && docker container run -it -d --network host --name server --privileged -v /sys/:/sys/ btardio/ecea5307btardio
+
+
+anywhere run the client:
+
+docker build -f ./Dockerfile_client -t thriftclient . && docker run thriftclient
+
+
+
+
+
 
 Note: this is using
 

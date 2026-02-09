@@ -1,0 +1,71 @@
+# Use an ARM64 ubuntu base image
+FROM debian AS builder
+
+# Avoid interaction during package installation
+ARG DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y git
+
+RUN git clone https://github.com/KhronosGroup/OpenCL-Headers.git opencl_headers
+
+RUN cp -r opencl_headers/* /usr/local/include
+
+# Install build essential tools and OpenCL headers
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    cmake \
+    git \
+    ocl-icd-libopencl1 \
+    ocl-icd-dev \
+    opencl-headers \
+    vim \
+    ocl-icd-opencl-dev \
+    pocl-opencl-icd \
+    strace \
+    automake bison flex git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config \
+#    libthrift-dev \
+#    libboost-all-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+RUN ls
+RUN git clone https://github.com/btardio/ecea5307btardio-thrift.git thrift
+# RUN cd /app/thrift && git checkout 67bfb29af0837eefd32447c186d22aa45b2f1869
+
+RUN cd /app/thrift && ./bootstrap.sh
+RUN cd /app/thrift && ./configure --disable-debug --disable-dependency-tracking --without-java --without-kotlin --without-python --without-py3 --without-ruby --without-haxe --without-netstd --without-perl --without-php --without-php_extension --without-dart --without-erlang --without-go --without-d --without-nodejs --without-nodets --without-lua --without-rs --without-swift
+RUN cd /app/thrift && make -j$(nproc)
+RUN cd /app/thrift && make install
+RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
+
+COPY . .
+
+# Set working directory
+
+# Copy your source code
+COPY . .
+
+RUN gcc opencl_device.cpp -I/usr/local/include -lOpenCL -o opencl_device
+# Example Build Command: 
+# Link statically against ocl-icd and opencl-headers
+# RUN g++ -static main.cpp -lOpenCL -I/usr/include -o my_opencl_app
+
+CMD ["/bin/bash"]
+
+FROM debian
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y \
+    ocl-icd-libopencl1 \
+    pocl-opencl-icd \
+    strace \
+    && rm -rf /var/lib/apt/lists/*
+#
+COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
+COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
+COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
+COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
+COPY --from=builder /app/opencl_device /opencl_device
+
+ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+
+CMD ["/TutorialClient"]
