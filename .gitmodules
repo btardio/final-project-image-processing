@@ -1,0 +1,3 @@
+[submodule "ecea5307btardio-thrift"]
+	path = ecea5307btardio-thrift
+	url = git@github.com:btardio/ecea5307btardio-thrift.git
