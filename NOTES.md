@@ -26,6 +26,9 @@ sudo docker build -t btardio/ecea5307btardio:latest . && sudo docker push btardi
 
 RPI5:
 
+docker container stop server || true && docker system prune -a -f && docker container run -it -d --network host --name server --privileged -v /sys/:/sys/ btardio/ecea5307btardio
+
+
 docker system prune -a -f && docker container run -it -d --network host --privileged -v /sys/:/sys/ btardio/ecea5307btardio
 
 
