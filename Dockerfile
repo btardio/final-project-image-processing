@@ -1,6 +1,5 @@
 # Use an ARM64 ubuntu base image
-FROM debian
-#FROM arm64v8/debian AS builder
+FROM arm64v8/debian AS builder
 
 # Avoid interaction during package installation
 ARG DEBIAN_FRONTEND=noninteractive
@@ -29,9 +28,9 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
-RUN git clone https://github.com/apache/thrift.git
-RUN cd /app/thrift && git checkout 67bfb29af0837eefd32447c186d22aa45b2f1869
+RUN ls
+RUN git clone https://github.com/btardio/ecea5307btardio-thrift.git thrift
+# RUN cd /app/thrift && git checkout 67bfb29af0837eefd32447c186d22aa45b2f1869
 
 RUN cd /app/thrift && ./bootstrap.sh
 RUN cd /app/thrift && ./configure --disable-debug --disable-dependency-tracking --without-java --without-kotlin --without-python --without-py3 --without-ruby --without-haxe --without-netstd --without-perl --without-php --without-php_extension --without-dart --without-erlang --without-go --without-d --without-nodejs --without-nodets --without-lua --without-rs --without-swift
@@ -53,23 +52,20 @@ RUN gcc opencl_device.cpp -I/usr/local/include -lOpenCL -o opencl_device
 
 CMD ["/bin/bash"]
 
-# FROM arm64v8/debian
-# ARG DEBIAN_FRONTEND=noninteractive
-# RUN apt-get update && apt-get install -y \
-#     ocl-icd-libopencl1 \
-#     pocl-opencl-icd \
-#     strace \
-#     && rm -rf /var/lib/apt/lists/*
+FROM arm64v8/debian
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y \
+    ocl-icd-libopencl1 \
+    pocl-opencl-icd \
+    strace \
+    && rm -rf /var/lib/apt/lists/*
+#
+COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
+COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
+COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
+COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
+COPY --from=builder /app/opencl_device /opencl_device
 
-# COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
-# COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
-# COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
-# COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
-# COPY --from=builder /app/opencl_device /opencl_device
+ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 
-# ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
-
-# RUN echo "export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH" >> /etc/bash.bashrc
-# RUN echo "export LD_LIBRARY_PATH=/usr/local/lib/:$LD_LIBRARY_PATH" >> /etc/profile
-# CMD ["/TutorialServer"]
-# CMD ["/opencl_device"]
+CMD ["/TutorialServer"]
