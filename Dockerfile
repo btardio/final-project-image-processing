@@ -52,7 +52,7 @@ RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
 # Copy your source code
 # COPY . .
 
-RUN gcc opencl_device.cpp -I/usr/local/include -lOpenCL -o opencl_device
+# RUN gcc opencl_device.cpp -I/usr/local/include -lOpenCL -o opencl_device
 # Example Build Command: 
 # Link statically against ocl-icd and opencl-headers
 # RUN g++ -static main.cpp -lOpenCL -I/usr/include -o my_opencl_app
