@@ -41,7 +41,8 @@ RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
 COPY ecea5307btardio-thrift/tutorial/tutorial.thrift /app/thrift/tutorial/tutorial.thrift
 COPY ecea5307btardio-thrift/tutorial/cpp/CppClient.cpp /app/thrift/tutorial/cpp/CppClient.cpp                                                                                            
 COPY ecea5307btardio-thrift/tutorial/cpp/CppServer.cpp /app/thrift/tutorial/cpp/CppServer.cpp 
-                                                                          
+COPY ecea5307btardio-thrift/tutorial/cpp/Makefile.am /app/thrift/tutorial/cpp/Makefile.am
+# RUN ls > /lsfile                                                                          
 RUN cd /app/thrift && make -j$(nproc)                                        
 RUN cd /app/thrift && make install
 RUN cd /app/thrift && make -j$(nproc) -C lib/cpp

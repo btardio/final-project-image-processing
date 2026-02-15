@@ -41,6 +41,7 @@ RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
 COPY ecea5307btardio-thrift/tutorial/tutorial.thrift /app/thrift/tutorial/tutorial.thrift
 COPY ecea5307btardio-thrift/tutorial/cpp/CppClient.cpp /app/thrift/tutorial/cpp/CppClient.cpp
 COPY ecea5307btardio-thrift/tutorial/cpp/CppServer.cpp /app/thrift/tutorial/cpp/CppServer.cpp
+COPY ecea5307btardio-thrift/tutorial/cpp/Makefile.am /app/thrift/tutorial/cpp/Makefile.am
 
 RUN cd /app/thrift && make -j$(nproc)
 RUN cd /app/thrift && make install                  
@@ -65,7 +66,7 @@ RUN apt-get update && apt-get install -y \
     pocl-opencl-icd \
     strace \
     && rm -rf /var/lib/apt/lists/*
-#
+
 COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
 COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
 COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
