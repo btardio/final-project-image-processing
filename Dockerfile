@@ -66,13 +66,12 @@ RUN apt-get update && apt-get install -y \
     ocl-icd-libopencl1 \
     pocl-opencl-icd \
     strace \
-    && rm -rf /var/lib/apt/lists/*
+   && rm -rf /var/lib/apt/lists/*
 #
 COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
 COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
 COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
 COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
-# COPY --from=builder /app/opencl_device /opencl_device
 
 ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 

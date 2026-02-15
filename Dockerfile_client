@@ -59,20 +59,20 @@ RUN gcc opencl_device.cpp -I/usr/local/include -lOpenCL -o opencl_device
 
 CMD ["/bin/bash"]
 
-FROM debian
-ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get install -y \
-    ocl-icd-libopencl1 \
-    pocl-opencl-icd \
-    strace \
-    && rm -rf /var/lib/apt/lists/*
+#FROM debian
+#ARG DEBIAN_FRONTEND=noninteractive
+#RUN apt-get update && apt-get install -y \
+#    ocl-icd-libopencl1 \
+#    pocl-opencl-icd \
+#    strace \
+#    && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
-COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
-COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
-COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
-COPY --from=builder /app/opencl_device /opencl_device
+#COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
+#COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
+#COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
+#COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
 
-ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 
-CMD ["/TutorialClient"]
+#ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
+
+#CMD ["/TutorialClient"]
