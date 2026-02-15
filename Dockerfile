@@ -38,12 +38,19 @@ RUN cd /app/thrift && make -j$(nproc)
 RUN cd /app/thrift && make install
 RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
 
-COPY . .
+COPY ecea5307btardio-thrift/tutorial/tutorial.thrift /app/thrift/tutorial/tutorial.thrift
+COPY ecea5307btardio-thrift/tutorial/cpp/CppClient.cpp /app/thrift/tutorial/cpp/CppClient.cpp                                                                                            
+COPY ecea5307btardio-thrift/tutorial/cpp/CppServer.cpp /app/thrift/tutorial/cpp/CppServer.cpp 
+                                                                          
+RUN cd /app/thrift && make -j$(nproc)                                        
+RUN cd /app/thrift && make install
+RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
+
 
 # Set working directory
 
 # Copy your source code
-COPY . .
+# COPY . .
 
 RUN gcc opencl_device.cpp -I/usr/local/include -lOpenCL -o opencl_device
 # Example Build Command: 
