@@ -75,8 +75,6 @@ COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
 
 ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 
-COPY input_images /input_images
-
-COPY input.rgba /input.rgba
+COPY gpa.raw /gpa.raw
 
 CMD ["/TutorialClient"]
