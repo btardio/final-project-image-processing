@@ -75,6 +75,7 @@ COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
 
 ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 
-COPY gpa.raw /gpa.raw
+COPY untitled.raw /untitled.raw
+
 
 CMD ["/TutorialClient"]
