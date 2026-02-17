@@ -45,21 +45,24 @@ def read_rgba_from_stdin():
 	pixels = []
 
 	for i in range(0, len(bytesout), chunk_size):
-		chunk = bytesout[i:i + chunk_size]
-		print(f"Processing chunk: {chunk}")
+		try:
+			chunk = bytesout[i:i + chunk_size]
+			#print(f"Processing chunk: {chunk}")
 		
-		r = chunk[0]
-		g = chunk[1]
-		b = chunk[2]
-		a = chunk[3]
+			r = chunk[0]
+			g = chunk[1]
+			b = chunk[2]
+			a = chunk[3]
 		
 		
-		pixels.append((r,g,b,a))
+			pixels.append((r,g,b,a))
+		except Exception as e:
+			print("some sizing error")
 		
 	for x in range(width):
 		for y in range(height):
 			
-			index = (width * x) + y
+			index = (width * y) + x
 			
 			img.putpixel((x,y), pixels[index])
 	
