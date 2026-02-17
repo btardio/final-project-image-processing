@@ -2,6 +2,14 @@ Notes:
 
 client run:
 
+docker build -f ./Dockerfile_client -t thriftclient . && docker container run  -it thriftc
+lient | python3 rgba_to_image.py
+
+only python image:
+
+cat rectuntitled.png | python3 image_to_rgba.py | python3 rgba_to_image.py
+
+
 docker build -f ./Dockerfile_client -t thriftclient . && docker container run -it thriftclient | python3 rgba_to_image.py
 firefox output_image.png
 
