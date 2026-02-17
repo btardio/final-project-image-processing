@@ -1,5 +1,12 @@
 Notes:
 
+client run:
+
+docker build -f ./Dockerfile_client -t thriftclient . && docker container run -it thriftclient | python3 rgba_to_image.py
+firefox output_image.png
+
+
+
 reproduce complexity:
 
 

@@ -65,6 +65,8 @@ RUN apt-get update && apt-get install -y \
     ocl-icd-libopencl1 \
     pocl-opencl-icd \
     strace \
+    python3-pil \
+    python3-numpy \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
@@ -75,7 +77,15 @@ COPY --from=builder /usr/local/lib/libthrift* /usr/local/lib/
 
 ENV LD_LIBRARY_PATH="/usr/local/lib:${LD_LIBRARY_PATH}"
 
-COPY untitled.raw /untitled.raw
+COPY untitled.png /untitled.png
 
+COPY image_to_rgba.py /image_to_rgba.py
+COPY rgba_to_image.py /rgba_to_image.py
 
-CMD ["/TutorialClient"]
+COPY entrypoint.sh /entrypoint.sh
+
+RUN chmod +x /entrypoint.sh
+
+CMD ["/entrypoint.sh"]
+# cat /untitled.png"] 
+# | python3 /image_to_rgba.py | /TutorialClient"]

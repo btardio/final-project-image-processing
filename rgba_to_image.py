@@ -16,24 +16,16 @@ def read_stdin_chunks(chunk_size=1024):
         yield chunk
         
 def read_rgba_from_stdin():
-	# Read all binary data from stdin
-	# In Python 3, use sys.stdin.buffer to read binary data
-	#img_bytes = sys.stdin.buffer.read()
 
-	#if not img_bytes:
-	#	print("Error: No image data received from stdin.")
-	#	sys.exit(1)
 	bytesout = bytearray(b'')
 	total_bytes_read = 0
 	for data_chunk in read_stdin_chunks():
-		# Process each data_chunk (which is a bytes object)
-		#total_bytes_read += len(data_chunk)
-		#print(data_chunk)
+
+
+
 		for chunkchar in data_chunk:
-			#print(">")
-			#print(bytes([chunkchar]))
 			bytesout.extend(bytes([chunkchar]))
-	#print(f"Total bytes read: {total_bytes_read}")
+	
 
 	width_bytes = bytesout[0:4]
 	height_bytes = bytesout[4:8]
@@ -43,20 +35,6 @@ def read_rgba_from_stdin():
 	
 	integer_value_height = int.from_bytes(height_bytes, byteorder='big', signed=False)
 
-	#print( integer_value_height )
-	#print( integer_value_width )
-	
-	#return None
-	#print(img_bytes)
-#	try:
-#		print ("~")
-#		for byte in img_bytes:
-#			print ("~")
-#			print(repr(byte))
-        
-	#except Exception as e:
-	#	pass
-	
 	width = integer_value_width
 	height = integer_value_height
 	
@@ -82,7 +60,7 @@ def read_rgba_from_stdin():
 		for y in range(height):
 			
 			index = (width * x) + y
-			#print(index)
+			
 			img.putpixel((x,y), pixels[index])
 	
 	img.save("output_image.png")
