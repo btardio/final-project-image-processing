@@ -26,12 +26,22 @@ docker container stop server || true && docker system prune -a -f && docker cont
 
 docker build -f ./Dockerfile_client -t thriftclient . && docker container run -it thriftc lient | python3 rgba_to_image.py
 
-# The python script copies an untitled.png file and the result is stored in 
-
-
-
+# The python script copies an untitled.png file and the result is stored in output_image.png
 
 ```
+
+
+### Sample images:
+
+Sample images can be found in the processed_images directory.
+
+
+### Results
+
+I am uncertain as to why the algorithm did not perform successfully for larger images. I rule out the blame being the chip and it is probably 
+a programming error that I introduced but did solve. My rationale is that if the chip is faulty it wouldn't start up and run at all. 
+
+
 
 
 
