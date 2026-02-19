@@ -23,14 +23,11 @@ RUN apt-get update && apt-get install -y \
     pocl-opencl-icd \
     strace \
     automake bison flex git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config \
-#    libthrift-dev \
-#    libboost-all-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 RUN ls
 RUN git clone https://github.com/btardio/ecea5307btardio-thrift.git thrift
-# RUN cd /app/thrift && git checkout 67bfb29af0837eefd32447c186d22aa45b2f1869
 
 RUN cd /app/thrift && ./bootstrap.sh
 RUN cd /app/thrift && ./configure --disable-debug --disable-dependency-tracking --without-java --without-kotlin --without-python --without-py3 --without-ruby --without-haxe --without-netstd --without-perl --without-php --without-php_extension --without-dart --without-erlang --without-go --without-d --without-nodejs --without-nodets --without-lua --without-rs --without-swift
@@ -42,21 +39,10 @@ COPY ecea5307btardio-thrift/tutorial/tutorial.thrift /app/thrift/tutorial/tutori
 COPY ecea5307btardio-thrift/tutorial/cpp/CppClient.cpp /app/thrift/tutorial/cpp/CppClient.cpp                                                                                            
 COPY ecea5307btardio-thrift/tutorial/cpp/CppServer.cpp /app/thrift/tutorial/cpp/CppServer.cpp 
 COPY ecea5307btardio-thrift/tutorial/cpp/Makefile.am /app/thrift/tutorial/cpp/Makefile.am
-# RUN ls > /lsfile                                                                          
 RUN cd /app/thrift && make -j$(nproc)                                        
 RUN cd /app/thrift && make install
 RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
 
-
-# Set working directory
-
-# Copy your source code
-# COPY . .
-
-# RUN gcc opencl_device.cpp -I/usr/local/include -lOpenCL -o opencl_device
-# Example Build Command: 
-# Link statically against ocl-icd and opencl-headers
-# RUN g++ -static main.cpp -lOpenCL -I/usr/include -o my_opencl_app
 
 CMD ["/bin/bash"]
 
@@ -67,7 +53,7 @@ RUN apt-get update && apt-get install -y \
     pocl-opencl-icd \
     strace \
    && rm -rf /var/lib/apt/lists/*
-#
+
 COPY --from=builder /app/thrift/tutorial/cpp/.libs/ /.libs
 COPY --from=builder /app/thrift/tutorial/cpp/TutorialServer /TutorialServer
 COPY --from=builder /app/thrift/tutorial/cpp/TutorialClient /TutorialClient
