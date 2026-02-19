@@ -42,6 +42,13 @@ I am uncertain as to why the algorithm did not perform successfully for larger i
 a programming error that I introduced but did solve. My rationale is that if the chip is faulty it wouldn't start up and run at all. 
 
 
+#### TODO
+
+More work can be done, including trying another transport. The original idea was to include the OpenCL to do image processing using the 4 chips on
+the raspberry, this was not successful. The OpenCL showed CPU loads of nearly 3.0. The next tasks after completing black and white image transfer
+would be to do an edge detection.
+
+
 ### Work Completed:
 
 The cpp files modified are buried in the tutorial for Thrift, I have included them below for reference.
@@ -427,11 +434,5 @@ int main() {
 
 
 ```
-
-#### TODO
-
-More work can be done, including trying another transport. The original idea was to include the OpenCL to do image processing using the 4 chips on
-the raspberry, this was not successful. The OpenCL showed CPU loads of nearly 3.0. The next tasks after completing black and white image transfer
-would be to do an edge detection.
 
 
