@@ -3,29 +3,35 @@ import numpy as np
 import sys
 import io
 
-
-
-def read_stdin_chunks(chunk_size=1024):
-    """Reads stdin in chunks and yields bytes objects."""
-    while True:
-        # Read a chunk of data (at most chunk_size bytes)
-        chunk = sys.stdin.buffer.read(chunk_size)
-        if not chunk:
-            # End of file (EOF) reached
-            break
-        yield chunk
-        
+    
 def read_rgba_from_stdin():
 
-	bytesout = bytearray(b'')
-	total_bytes_read = 0
-	for data_chunk in read_stdin_chunks():
-
-
-
-		for chunkchar in data_chunk:
-			bytesout.extend(bytes([chunkchar]))
 	
+	total_bytes_read = 0
+	
+	source = sys.stdin.buffer
+	bytesout = bytearray(b'')
+	while True:
+
+		chunk = source.read(4096)
+		if not chunk:
+			break
+        # Append the chunk to the bytearray
+		bytesout.extend(chunk)
+        
+	
+	#for data_chunk in read_stdin_chunks():
+
+	#	pass
+		#bytesout.append(data_chunk)
+		#for chunkchar in data_chunk:
+			#bytesout.extend(bytes([chunkchar]))
+			#bytewrite = int(chunkchar)
+			#if bytewrite > 255:
+			#	bytewrite = 254
+			#if bytewrite < 1:
+			#	bytewrite = 1
+			#bytesout.extend(bytes([bytewrite]))
 
 	width_bytes = bytesout[0:4]
 	height_bytes = bytesout[4:8]
@@ -48,11 +54,11 @@ def read_rgba_from_stdin():
 		try:
 			chunk = bytesout[i:i + chunk_size]
 			#print(f"Processing chunk: {chunk}")
-		
-			r = chunk[0]
-			g = chunk[1]
-			b = chunk[2]
-			a = chunk[3]
+			
+			r = int(chunk[0])
+			g = int(chunk[1])
+			b = int(chunk[2])
+			a = int(chunk[3])
 		
 		
 			pixels.append((r,g,b,a))

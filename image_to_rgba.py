@@ -19,15 +19,6 @@ def read_image_from_stdin():
         
 		img = Image.open(image_stream)
         
-		# new_size = (img.size[0] // 13, img.size[1] // 13)
-
-		# Resize the image
-		# Using Resampling.LANCZOS or Resampling.BICUBIC for high-quality downsampling
-		# img = img.resize(new_size, Image.Resampling.LANCZOS)
-
-		#print(f"Image format: {img.format}")
-		#print(f"Image size: {img.size}")
-        
 		byte_representation_width = img.size[0].to_bytes(4, byteorder='big', signed=False)
 		byte_representation_height = img.size[1].to_bytes(4, byteorder='big', signed=False)
 
@@ -43,9 +34,7 @@ def read_image_from_stdin():
 		
 		x = np.array(imgrgba)
 		r, g, b, a = np.rollaxis(x, axis = -1)
-		#r[a == 0] = 255
-		#g[a == 0] = 255
-		#b[a == 0] = 255
+
 		rgbaarray = np.dstack([r, g, b, a])
 		
 		charbuff = []
