@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     pocl-opencl-icd \
     strace \
     automake bison flex git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config \
+    libpng-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
