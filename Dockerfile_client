@@ -23,6 +23,7 @@ RUN apt-get update && apt-get install -y \
     pocl-opencl-icd \
     strace \
     automake bison flex git libboost-all-dev libevent-dev libssl-dev libtool make pkg-config \
+    libpng-dev \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -34,9 +35,6 @@ RUN cd /app/thrift && ./configure --disable-debug --disable-dependency-tracking 
 RUN cd /app/thrift && make -j$(nproc)
 RUN cd /app/thrift && make install
 RUN cd /app/thrift && make -j$(nproc) -C lib/cpp
-
-RUN apt update
-RUN apt install -y libpng-dev
 
 COPY ecea5307btardio-thrift/tutorial/tutorial.thrift /app/thrift/tutorial/tutorial.thrift
 COPY ecea5307btardio-thrift/tutorial/cpp/CppClient.cpp /app/thrift/tutorial/cpp/CppClient.cpp
